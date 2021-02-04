@@ -1,0 +1,42 @@
+{% block content %}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        Tu email es: {{correo}}
+        <table class="table" border="1">
+            <thead>
+            <th>Imagen</th>
+            <th>Descripci&oacute;n</th>
+            <th>Likes</th>
+            </thead>
+            <tbody>
+            {% for i in imagenes %}
+            {% if i.usuario==correo %}  
+
+            <tr>
+                <td><img src="fotos/{{ i.nombre }}" alt="Imagen"></td>
+                <td>{{ i.descripcion }}</td>
+                <td>{{ i.likes }}</td>
+                <td><a class="btn btn-warning" href="/editar/{{ i._id }}/{{ i.descripcion }}"> Editar </a></td>
+                <td><a class="btn btn-warning" href="/eliminar/{{ i._id }}"> Eliminar </a></td>
+            </tr>
+            {% else %}
+
+            <tr>
+                <td><img src="/fotos/{{ i.nombre }}" alt="Imagen"></td>
+                <td>{{ i.descripcion }}</td>
+                <td>{{ i.likes }}</td>
+                <td><a class="btn btn-warning" href="/like/{{ i._id }}/{{ i.likes }}"> Like </a></td>
+            </tr>
+            
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<a class="btn btn-warning" href="/nuevo">Nueva imagen</a>
+<a href="/">Sign out</a>
+
+{% endblock content %}

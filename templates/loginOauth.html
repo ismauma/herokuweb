@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Google OAuth login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- INSERT YOUR <CLIENT_ID> IN THE LINE BELOW -->
+        
+        <!-- Es necesario limpiar la cache del navegador si editamos el OAuth Client para fijar origenes -->
+        
+        <meta name="google-signin-client_id" content="195742355808-v7fljt7gjvb2q5jn6hrmkpkbqtsh3ie0.apps.googleusercontent.com">
+
+        <script>
+            var profile, id_token;
+            function goToApp(){
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/login', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                
+                document.getElementById("idtoken").value = id_token;
+                document.getElementById("correo").value = profile.getEmail();
+                document.getElementById("formulario").submit();
+            }
+            function onSignIn(googleUser) {
+                profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId() + 'Do not send to your backend! Use an ID token instead.'); 
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                id_token = googleUser.getAuthResponse().id_token;
+                console.log('ID token: ' + id_token);
+                
+                console.log('You can check the ID token with:');
+                console.log('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=<ID token>');
+                console.log('for instance:');
+                console.log('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + id_token);
+                
+                document.getElementById('loginbtn').disabled = false;
+
+                //document.getElementById("correo").value = profile.getEmail();
+                }
+
+                function signOut() {
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                        console.log('User signed out.');
+                    });
+                    document.getElementById("idtoken").value ="";
+                    document.getElementById("correo").value = "";
+                    document.getElementById('loginbtn').disabled = true;
+                }
+        </script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+    <body>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div><br>
+        <button id="loginbtn" onclick="goToApp();" disabled="disabled">Log in</button><br><br>
+
+        <button onclick="signOut();">Sign out</button>
+        <form method="POST" action="/login" id="formulario">
+            <input type="hidden" id="correo" name="correo">
+            <input type="hidden" id="idtoken" name="idtoken">
+          </form> 
+
+          <h2>{{ error }}</h2>
+    </body>
+</html>
