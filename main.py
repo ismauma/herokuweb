@@ -11,18 +11,18 @@ from google.auth.transport import requests
 from werkzeug.utils import secure_filename 
 
 
-api_key = u'19842a35780dcd90c170d75f5d5b168c'
-api_secret = u'bf1442c3ef944853'
+api_key = u'3a53497e21a7cf9723188a84d95f9d98'
+api_secret = u'18bc52149f701d73'
 
 flickr = flickrapi.FlickrAPI(api_key, api_secret)
 flickr.authenticate_via_browser(perms='read')
-photos = flickr.photos.search(user_id='73509078@N00', per_page='10')
-sets = flickr.photosets.getList(user_id='73509078@N00') 
+photos = flickr.photos.search(user_id='192027112@N07', per_page='10')
+sets = flickr.photosets.getList(user_id='192027112@N07') 
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './fotos'
 
-uri = 'mongodb+srv://ruben:ingweb21@clusterruben.83p20.mongodb.net/ingweb?retryWrites=true&w=majority'
+uri = 'mongodb+srv://admin:admin@cluster0.wepwf.mongodb.net/ingweb?retryWrites=true&w=majority'
 
 client = pymongo.MongoClient(uri)
 
@@ -45,7 +45,7 @@ def login_oauth():
     idtoken = request.form['idtoken']
 
     try:
-        CLIENT_ID = '195742355808-v7fljt7gjvb2q5jn6hrmkpkbqtsh3ie0.apps.googleusercontent.com'
+        CLIENT_ID = '1092126195951-achan1mgooi8u1ob0es382v4bohbih27.apps.googleusercontent.com'
         id_token.verify_oauth2_token(idtoken, requests.Request(), CLIENT_ID)
 
     except ValueError:
